@@ -2,10 +2,8 @@ package com.baxterpad.jengaapp;
 
 import com.baxterpad.jengaapp.util.SystemUiHider;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActionBar;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -13,8 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.baxterpad.jengaapp.Rules;
+
 
 import java.util.Random;
+
+import static com.baxterpad.jengaapp.Rules.*;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -52,19 +54,8 @@ public class FullscreenActivity extends Activity {
     private SystemUiHider mSystemUiHider;
 
     private static boolean GAME_IN_PROGRESS = false;
-
-    private static final String[] rules = {
-            "Rule #1",
-            "Rule #2",
-            "Rule #3",
-            "Rule #4",
-            "Rule #5",
-            "Rule #6",
-            "Rule #7",
-            "Rule #8",
-            "Rule #9",
-            "Rule #10",
-    };
+    private String[] ruleNames = {};
+    private String[] ruleDescriptions = {};
 
     private static String[] current_rules;
     private static int rule_index = 0;
@@ -150,7 +141,7 @@ public class FullscreenActivity extends Activity {
                     //GAME_IN_PROGRESS = false;
 
                     if (rule_index >= current_rules.length) {
-                        current_rules = shuffleRules();
+                        current_rules = Rules.shuffleRules();
                         rule_index = 0;
                     }
                     txtView.setText(current_rules[rule_index]);
@@ -219,6 +210,14 @@ public class FullscreenActivity extends Activity {
             }
         });
 
+        Rules rules = new Rules();
+
+        try {
+            rules.initializeRules();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         current_rules = shuffleRules();
         rule_index = 0;
     }
@@ -266,27 +265,5 @@ public class FullscreenActivity extends Activity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    private String[] shuffleRules() {
-        String[] temp_rules = new String[rules.length];
-        for (int i = 0; i < rules.length; i++) {
-            temp_rules[i] = rules[i];
-        }
 
-        int newI;
-        String temp_rule;
-        Random randIndex = new Random();
-
-        for (int i = 0; i < rules.length; i++) {
-
-            // pick a random index between 0 and cardsInDeck - 1
-            newI = randIndex.nextInt(rules.length);
-
-            // swap cards[i] and cards[newI]
-            temp_rule = temp_rules[i];
-            temp_rules[i] = temp_rules[newI];
-            temp_rules[newI] = temp_rule;
-        }
-
-        return temp_rules;
-    }
 }
