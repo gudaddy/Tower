@@ -13,11 +13,6 @@ import android.widget.TextView;
 
 import com.baxterpad.jengaapp.Rules;
 
-
-import java.util.Random;
-
-import static com.baxterpad.jengaapp.Rules.*;
-
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -63,6 +58,15 @@ public class FullscreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            Rules.initializeRules();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        current_rules = Rules.shuffleRules();
+        rule_index = 0;
 
         setContentView(R.layout.activity_fullscreen);
 
@@ -145,13 +149,18 @@ public class FullscreenActivity extends Activity {
                         rule_index = 0;
                     }
                     txtView.setText(current_rules[rule_index]);
+                    //android:textSize="50sp"
+
+                    // portrait 14 * 11 = 154
+                    // landscape 6 * 21 = 126
+
                     rule_index++;
 
                 } else {
                     GAME_IN_PROGRESS = true;
                     //TextView txtView = (TextView) findViewById(R.id.fullscreen_content);
                     if (rule_index >= current_rules.length) {
-                        current_rules = shuffleRules();
+                        current_rules = Rules.shuffleRules();
                         rule_index = 0;
                     }
                     txtView.setText(current_rules[rule_index]);
@@ -197,7 +206,7 @@ public class FullscreenActivity extends Activity {
                     //startButton.setText(R.string.button_start);
                     controlsView.setVisibility(View.INVISIBLE);
                     //startButton.setVisibility(View.GONE);
-                    current_rules = shuffleRules();
+                    current_rules = Rules.shuffleRules();
                     rule_index = 0;
                 } else {
                     GAME_IN_PROGRESS = true;
@@ -209,17 +218,6 @@ public class FullscreenActivity extends Activity {
                 return true;
             }
         });
-
-        Rules rules = new Rules();
-
-        try {
-            rules.initializeRules();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        current_rules = shuffleRules();
-        rule_index = 0;
     }
 
     @Override

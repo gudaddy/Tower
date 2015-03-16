@@ -10,9 +10,9 @@ import android.net.NetworkInfo;
  */
 public class Network {
 
-    public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager =  getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+//    public static boolean isNetworkAvailable() {
+//        ConnectivityManager connectivityManager =  getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+//    }
 }
