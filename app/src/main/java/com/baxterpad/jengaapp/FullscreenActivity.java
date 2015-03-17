@@ -11,7 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.baxterpad.jengaapp.Rules;
+// @TODO Make sure when in landscape that flipping it upside down will reorient the screen.
+
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -48,12 +49,17 @@ public class FullscreenActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
+    /**
+     * Game variables
+     */
     private static boolean GAME_IN_PROGRESS = false;
-    private String[] ruleNames = {};
-    private String[] ruleDescriptions = {};
-
     private static String[] current_rules;
     private static int rule_index = 0;
+
+    /**
+     * A shaker object for detecting when the device has been shaken (not stirred).
+     */
+    private ShakeListener mShaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,7 @@ public class FullscreenActivity extends Activity {
         setContentView(R.layout.activity_fullscreen);
 
         View decorView = getWindow().getDecorView();
+
         // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
@@ -79,6 +86,7 @@ public class FullscreenActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
+        // UI objects for modifying the UI based on game state
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
         final Button startButton = (Button) findViewById(R.id.dummy_button);
@@ -86,106 +94,25 @@ public class FullscreenActivity extends Activity {
 
         controlsView.setVisibility(View.INVISIBLE);
 
-        // Set up an instance of SystemUiHider to control the system UI for
-        // this activity.
-        /*
-        mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
-        mSystemUiHider.setup();
-        mSystemUiHider
-                .setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-                    // Cached values.
-                    int mControlsHeight;
-                    int mShortAnimTime;
+        // Action based on shake
+        mShaker = new ShakeListener(this);
+        mShaker.setOnShakeListener(new ShakeListener.OnShakeListener () {
+            public void onShake() {
+                gameLogic(controlsView, startButton, txtView);
+            }
+        });
 
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-                    public void onVisibilityChange(boolean visible) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                            // If the ViewPropertyAnimator API is available
-                            // (Honeycomb MR2 and later), use it to animate the
-                            // in-layout UI controls at the bottom of the
-                            // screen.
-                            if (mControlsHeight == 0) {
-                                mControlsHeight = controlsView.getHeight();
-                            }
-                            if (mShortAnimTime == 0) {
-                                mShortAnimTime = getResources().getInteger(
-                                        android.R.integer.config_shortAnimTime);
-                            }
-                            controlsView.animate()
-                                    .translationY(visible ? 0 : mControlsHeight)
-                                    .setDuration(mShortAnimTime);
-                        } else {
-                            // If the ViewPropertyAnimator APIs aren't
-                            // available, simply show or hide the in-layout UI
-                            // controls.
-                            controlsView.setVisibility(visible ? View.VISIBLE : View.GONE);
-//                            controlsView.setVisibility(View.GONE);
-                        }
-
-                        if (visible && AUTO_HIDE) {
-                            // Schedule a hide().
-                            delayedHide(AUTO_HIDE_DELAY_MILLIS);
-                        }
-                    }
-                });
-        */
-        // Set up the user interaction to manually show or hide the system UI.
+        // Action based on click
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (TOGGLE_ON_CLICK) {
-//                    mSystemUiHider.toggle();
-//                } else {
-//                    //mSystemUiHider.show();
-//                    mSystemUiHider.hide();
-//                }
-
-                if (GAME_IN_PROGRESS) {
-                    //GAME_IN_PROGRESS = false;
-
-                    if (rule_index >= current_rules.length) {
-                        current_rules = Rules.shuffleRules();
-                        rule_index = 0;
-                    }
-                    txtView.setText(current_rules[rule_index]);
-                    //android:textSize="50sp"
-
-                    // portrait 14 * 11 = 154
-                    // landscape 6 * 21 = 126
-
-                    rule_index++;
-
-                } else {
-                    GAME_IN_PROGRESS = true;
-                    //TextView txtView = (TextView) findViewById(R.id.fullscreen_content);
-                    if (rule_index >= current_rules.length) {
-                        current_rules = Rules.shuffleRules();
-                        rule_index = 0;
-                    }
-                    txtView.setText(current_rules[rule_index]);
-                    rule_index++;
-
-                    //TextView txtView = (TextView) findViewById(R.id.fullscreen_content);
-                    //Button startButton = (Button) findViewById(R.id.dummy_button);
-                    startButton.setText(R.string.button_restart);
-                    //startButton.setVisibility(View.VISIBLE);
-                    controlsView.setVisibility(View.VISIBLE);
-                }
+                gameLogic(controlsView, startButton, txtView);
             }
         });
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        //@TODO game state: waiting for start
-        //@TODO game state: once started, display 'restart' button, display rule
-        //@TODO game event: on tap, display new rule
-        //@TODO game event: on restart, go back to start
-        //@TODO formatting - change font based on length and wrap strings and screen orientation
-        //@TODO game: after it loops around...rerandomize it
-        //@TODO game: make sure rules are limited to 256 characters?
-        //@TODO game: give it a second to hide UI?
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
 
 
@@ -263,5 +190,62 @@ public class FullscreenActivity extends Activity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
+    @Override
+    public void onResume() {
+        mShaker.resume();
+        super.onResume();
+    }
+    @Override
+    public void onPause() {
+        mShaker.pause();
+        super.onPause();
+    }
+
+    /**
+     * Game logic code. This will also update the UI based on the state of the game.
+     *
+     * @TODO better design this and separate game logic from UI code
+     *
+     * game state: waiting for start (hide 'restart' button)
+     * game state: once started, display 'restart' button, display rule
+     * game event: on tap, display new rule
+     * game event: on restart, go back to start
+     * @param controlsView
+     * @param startButton
+     * @param txtView
+     */
+    private static void gameLogic(
+        View controlsView,
+        Button startButton,
+        TextView txtView) {
+
+        if (GAME_IN_PROGRESS) {
+            //GAME_IN_PROGRESS = false;
+
+            if (rule_index >= current_rules.length) {
+                current_rules = Rules.shuffleRules();
+                rule_index = 0;
+            }
+            txtView.setText(current_rules[rule_index]);
+            //@TODO formatting - change font size based on length and screen orientation
+            //@TODO make sure rules are limited to 256 characters?
+            //android:textSize="50sp"
+            // portrait 14 * 11 = 154
+            // landscape 6 * 21 = 126
+            rule_index++;
+
+        } else {
+            GAME_IN_PROGRESS = true;
+            if (rule_index >= current_rules.length) {
+                current_rules = Rules.shuffleRules();
+                rule_index = 0;
+            }
+            txtView.setText(current_rules[rule_index]);
+            rule_index++;
+
+            startButton.setText(R.string.button_restart);
+            controlsView.setVisibility(View.VISIBLE);
+        }
+    }
 
 }
