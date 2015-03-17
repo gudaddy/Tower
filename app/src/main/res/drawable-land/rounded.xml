@@ -11,9 +11,6 @@
             android:topLeftRadius="10dp"
             android:topRightRadius="10dp" />
 
-        <stroke
-            android:width="20dp"
-            android:color="@color/brown" />
 
         <solid android:color="@color/orange" />
 
