@@ -177,9 +177,13 @@ public class FullscreenActivity extends Activity {
 
                 if (GAME_IN_PROGRESS) {
                     GAME_IN_PROGRESS = false;
+
                     textSwitcher.setInAnimation(slide_in);
                     textSwitcher.setOutAnimation(slide_out);
                     textSwitcher.setText(getResources().getString(R.string.instructions));
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) { /* Do nothing */ }
                     textSwitcher.setInAnimation(fade_in);
                     textSwitcher.setOutAnimation(fade_out);
                     controlsView.setVisibility(View.INVISIBLE);
@@ -296,6 +300,9 @@ public class FullscreenActivity extends Activity {
             startButton.setText(R.string.button_restart);
             controlsView.setVisibility(View.VISIBLE);
         }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) { /* Do nothing */ }
     }
 
 }
