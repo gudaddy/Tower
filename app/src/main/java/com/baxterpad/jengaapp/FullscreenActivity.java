@@ -4,12 +4,24 @@ import com.baxterpad.jengaapp.util.SystemUiHider;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
+import android.widget.ViewSwitcher.ViewFactory;
 
 // @TODO Make sure when in landscape that flipping it upside down will reorient the screen.
 
@@ -48,6 +60,16 @@ public class FullscreenActivity extends Activity {
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
+
+    /**
+     * Instance of TextSwitcher used for animations during text changes.
+     */
+    private TextSwitcher textSwitcher;
+    // Declare the in and out animations and initialize them
+    private Animation fade_in;
+    private Animation fade_out;
+    private Animation slide_in;
+    private Animation slide_out;
 
     /**
      * Game variables
@@ -90,7 +112,33 @@ public class FullscreenActivity extends Activity {
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
         final Button startButton = (Button) findViewById(R.id.dummy_button);
-        final TextView txtView = (TextView) findViewById(R.id.fullscreen_content);
+        //final TextView txtView = (TextView) findViewById(R.id.text_view_content);
+
+        textSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
+        textSwitcher.setFactory(new ViewFactory(){
+
+            @Override
+            public View makeView() {
+                TextView textView = new TextView(FullscreenActivity.this);
+                textView.setTextSize(50);
+                textView.setTextColor(Color.BLACK);
+                textView.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+                textView.setTypeface(Typeface.DEFAULT_BOLD);
+                //textView.setShadowLayer(10, 10, 10, Color.BLACK);
+                return textView;
+            }});
+        textSwitcher.setText(getResources().getString(R.string.instructions));
+
+        //textSwitcher.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+        fade_in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        fade_out = AnimationUtils.loadAnimation(this,android.R.anim.fade_out);
+        slide_in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+        slide_out = AnimationUtils.loadAnimation(this,android.R.anim.slide_out_right);
+
+        // set the animation type of textSwitcher
+        textSwitcher.setInAnimation(fade_in);
+        textSwitcher.setOutAnimation(fade_out);
 
         controlsView.setVisibility(View.INVISIBLE);
 
@@ -98,7 +146,7 @@ public class FullscreenActivity extends Activity {
         mShaker = new ShakeListener(this);
         mShaker.setOnShakeListener(new ShakeListener.OnShakeListener () {
             public void onShake() {
-                gameLogic(controlsView, startButton, txtView);
+                gameLogic(controlsView, startButton, textSwitcher);
             }
         });
 
@@ -106,7 +154,7 @@ public class FullscreenActivity extends Activity {
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameLogic(controlsView, startButton, txtView);
+                gameLogic(controlsView, startButton, textSwitcher);
             }
         });
 
@@ -129,15 +177,17 @@ public class FullscreenActivity extends Activity {
 
                 if (GAME_IN_PROGRESS) {
                     GAME_IN_PROGRESS = false;
-                    txtView.setText(R.string.instructions);
-                    //startButton.setText(R.string.button_start);
+                    textSwitcher.setInAnimation(slide_in);
+                    textSwitcher.setOutAnimation(slide_out);
+                    textSwitcher.setText(getResources().getString(R.string.instructions));
+                    textSwitcher.setInAnimation(fade_in);
+                    textSwitcher.setOutAnimation(fade_out);
                     controlsView.setVisibility(View.INVISIBLE);
                     //startButton.setVisibility(View.GONE);
                     current_rules = Rules.shuffleRules();
                     rule_index = 0;
                 } else {
                     GAME_IN_PROGRESS = true;
-                    //txtView.setText("Started");
                     startButton.setText(R.string.button_restart);
                     controlsView.setVisibility(View.VISIBLE);
                     //startButton.setVisibility(View.VISIBLE);
@@ -217,7 +267,7 @@ public class FullscreenActivity extends Activity {
     private static void gameLogic(
         View controlsView,
         Button startButton,
-        TextView txtView) {
+        TextSwitcher txtView) {
 
         if (GAME_IN_PROGRESS) {
             //GAME_IN_PROGRESS = false;

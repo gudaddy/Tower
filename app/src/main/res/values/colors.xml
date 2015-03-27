@@ -6,5 +6,7 @@
     <color name="blue">#0000FF</color>
     <color name="black">#000000</color>
     <color name="brown">#ae5800</color>
+    <color name="dark_brown">#400000</color>
+    <color name="light_brown">#804000</color>
 
 </resources>

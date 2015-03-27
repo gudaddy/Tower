@@ -4,6 +4,6 @@
     <string name="app_name">JengaApp</string>
     <string name="button_restart">Hold to restart</string>
     <string name="button_start">Start</string>
-    <string name="instructions">Tap\nto Play</string>
+    <string name="instructions">Tap to Play!</string>
 
 </resources>
