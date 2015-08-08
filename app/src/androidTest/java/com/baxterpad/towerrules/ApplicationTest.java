@@ -1,4 +1,4 @@
-package com.baxterpad.jengaapp;
+package com.baxterpad.towerrules;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/settings"
+        android:key="pref_category_settings">
+
+        <ListPreference
+            android:key="pref_key_rules"
+            android:title="Choose rules"
+            android:dialogTitle="Choose rules"
+            android:summary="Select a set of rules"
+            android:entries="@array/rule_set"
+            android:entryValues="@array/rule_set_values"
+            android:defaultValue="standard">
+        </ListPreference>
+
+        <ListPreference
+            android:key="pref_key_wallpaper"
+            android:title="Choose wallpaper"
+            android:dialogTitle="Choose wallpaper"
+            android:summary="Customize background"
+            android:entries="@array/backgrounds"
+            android:entryValues="@array/background_values"
+            android:defaultValue="wood_grain">
+        </ListPreference>
+
+        <CheckBoxPreference
+            android:key="pref_key_sound"
+            android:title="Enable sound"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/other"
+        android:key="pref_category_other">
+        <!-- EditTextPreference? -->
+        <Preference
+            android:key="pref_key_feedback"
+            android:title="@string/feedback"/>
+        <Preference
+            android:key="pref_key_about"
+            android:title="@string/about"/>
+        <!--<DialogPreference-->
+            <!--android:key="pref_key_about"-->
+            <!--android:dialogTitle="@string/about"-->
+            <!--android:dialogMessage="Thank you for using this app!"-->
+            <!--android:positiveButtonText="OK">-->
+        <!--</DialogPreference>-->
+
+    </PreferenceCategory>
+</PreferenceScreen>

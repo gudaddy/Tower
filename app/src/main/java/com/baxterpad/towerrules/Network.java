@@ -1,9 +1,5 @@
-package com.baxterpad.jengaapp;
+package com.baxterpad.towerrules;
 
-
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 /**
  * Created by Sean on 3/15/2015.

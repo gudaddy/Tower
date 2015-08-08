@@ -1,4 +1,4 @@
-package com.baxterpad.jengaapp;
+package com.baxterpad.towerrules;
 
 /* The following code was written by Matthew Wiggins
  * and is released under the APACHE 2.0 license

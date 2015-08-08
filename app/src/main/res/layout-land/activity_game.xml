@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:keepScreenOn="true"
+    tools:context=".ActivityGame">
+
+    <!-- This frame is here for a border. If a border is no
+    longer desired, remove this frame layout. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@color/black">
+        <!--android:padding="20dp"-->
+        <!--android:background="@drawable/rounded"-->
+        <!--android:background="@drawable/orange_wood_edited"-->
+
+        <FrameLayout
+            android:id="@+id/text_switcher_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/wood_light"
+            android:padding="5dp">
+
+            <TextSwitcher
+                android:id="@+id/text_switcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="60dp"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:id="@+id/reset_button_view" style="?metaButtonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                android:background="@color/black_overlay"
+                tools:ignore="UselessParent">
+                <!--android:padding="10dp"-->
+
+                <Button android:id="@+id/restart_button" style="?metaButtonBarButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/button_text" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

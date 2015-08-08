@@ -1,4 +1,4 @@
-package com.baxterpad.jengaapp;
+package com.baxterpad.towerrules;
 
 /**
  * Created by Sean on 3/15/2015.

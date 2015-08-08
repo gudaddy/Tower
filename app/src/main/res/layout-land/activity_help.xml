@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".ActivityHelp">
+    <!--android:background="@color/black"-->
+
+    <!-- This frame is here for a border. If a border is no
+    longer desired, remove this frame layout. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@color/black">
+        <!--android:padding="20dp"-->
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/background_image"
+            android:background="@drawable/wood_light"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/help_message"
+                android:text="@string/how_to_play"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:layout_gravity="top|left"
+                android:padding="20dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/help_image"
+                android:src="@drawable/proto256"
+                android:layout_gravity="center_horizontal"
+                android:padding="20dp"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="rule_set">
+        <item name="standard">Drinking Rules (NSFW)</item>
+    </string-array>
+
+    <string-array name="rule_set_values">
+        <item name="standard">standard</item>
+    </string-array>
+
+
+    <string-array name="backgrounds">
+        <item name="wood_grain">Wood Grain</item>
+    </string-array>
+
+    <string-array name="background_values">
+        <item name="wood_grain">wood_grain</item>
+    </string-array>
+
+</resources>

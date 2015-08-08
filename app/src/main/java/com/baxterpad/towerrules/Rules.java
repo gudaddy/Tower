@@ -1,15 +1,8 @@
-package com.baxterpad.jengaapp;
+package com.baxterpad.towerrules;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-//import com.baxterpad.jengaapp.Network;
-
-
-import android.content.Context;
-
+//import com.baxterpad.towerrules.Network;
 
 
 /**
@@ -19,7 +12,7 @@ public class Rules {
 
 
     private static String[] rules = new String[54];
-    private static String FILENAME = "rules";
+//    private static String FILENAME = "rules";
 
 //   public static String[] getRulesFromSite() throws Exception {
 //        ArrayList<String> ruleNames = new  ArrayList<String>();
@@ -35,7 +28,7 @@ public class Rules {
         rules[2] = "Social drink!";
         rules[3] = "Whenever you speak you must talk into a pretend microphone.";
         rules[4] = "Drink, then pull another piece.";
-        rules[5] = "Group chooses shot for you to take from anywhere (ex. Pickle juice).";
+        rules[5] = "Group chooses shot for you to take (ex. Pickle juice).";
         rules[6] = "You take a shot.";
         rules[7] = "Give 1!";
         rules[8] = "Give 2!";
@@ -62,9 +55,9 @@ public class Rules {
         rules[29] = "You must insult the person to your right, then compliment the person to your left.";
         rules[30] = "Any time you sing the Jeopardy theme song, the person taking their turn must complete their turn before you finish the song.";
         rules[31] = "You must refer to yourself in the third person for the rest of the game.";
-        rules[32] = "Pick a color.  Everyone must drink 1 for every article of clothing they have on that contains that color.";
-        rules[33] = "Tell a story that led to a scar on your body, or drink 3.";
-        rules[34] = "Perform I'm A Little Teapot and give 2 drinks, or drink 5.";
+        rules[32] = "Pick a color. Everyone must drink 1 for every article of clothing they have on that contains that color.";
+        rules[33] = "Tell a story that led to a scar on your body, or drink 4.";
+        rules[34] = "Perform I'm A Little Teapot and give 4 drinks, or drink 4.";
         rules[35] = "Choose someone to make an animal sound every time another person drinks for the rest of the game.";
         rules[36] = "Give 1 for every cat you own. Drink 3 if you have no cats.";
         rules[37] = "The oldest player drinks 4, then gives 4.";
@@ -80,10 +73,10 @@ public class Rules {
         rules[47] = "You can not speak for the rest of the game.";
         rules[48] = "You must sing whenever you talk for the rest game.";
         rules[49] = "Give 1. That player may give you 1 back. You may then give them 2; they may give 2 back. Continue until one of you opts not to give drinks.";
-        rules[50] = "Think of a block idea. If majority approves, this becomes that block. If not, you drink 5 whenever this is pulled again.";
-        rules[51] = "If you're the first person to pull this, drink 2. Every time this is pulled after that, you drink 6.";
+        rules[50] = "You must have drink in your other hand whenever you pull a block.";
+        rules[51] = "Anyone who picks up their cell phone must drink 1.";
         rules[52] = "Do your best impression of someone at the table.";
-        rules[53] = "Take 6 drinks - Jenga got you good!";
+        rules[53] = "You're in the hotseat! Everyone playing may ask you one question and you must answer truthfully.";
         //rules[53] = "abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef"; // 139
         //rules[53] = "abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef";
         return rules;

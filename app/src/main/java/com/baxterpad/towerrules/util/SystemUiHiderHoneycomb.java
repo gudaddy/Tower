@@ -1,4 +1,4 @@
-package com.baxterpad.jengaapp.util;
+package com.baxterpad.towerrules.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
