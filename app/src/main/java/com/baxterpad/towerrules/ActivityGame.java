@@ -1,13 +1,15 @@
 package com.baxterpad.towerrules;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -30,6 +32,9 @@ public class ActivityGame extends ActivityHideSystemUI {
      * Instance of TextSwitcher used for animations during text changes.
      */
     private TextSwitcher textSwitcher;
+    private Resources resources;
+    private Button restartButton;
+    private View rulesTextView;
 
     /**
      * Declare the in and out animations and initialize them
@@ -50,22 +55,23 @@ public class ActivityGame extends ActivityHideSystemUI {
     private static int rule_index = 0;
 
     private final static int TEXT_SIZE_NORMAL = 50;
-    private final static int TEXT_SIZE_SMALL = 40;
-    private final static int TEXT_SIZE_TINY = 25;
+    private final static int TEXT_SIZE_SMALL = 45;
+    private final static int TEXT_SIZE_SMALLER = 40;
+    private final static int TEXT_SIZE_TINY = 30;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("ActivityGame", "onCreate(): Creating view");
         setContentView(R.layout.activity_game);
 
         // UI objects for modifying the UI based on game state
-        final Resources resources = getResources();
+        resources = getResources();
 
         //final View restartButtonView = findViewById(R.id.reset_button_view);
-        final Button restartButton = (Button) findViewById(R.id.restart_button);
-        final View rulesTextView = findViewById(R.id.text_switcher_view);
+        restartButton = (Button) findViewById(R.id.restart_button);
+        rulesTextView = findViewById(R.id.text_switcher_view);
 
         textSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
         textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
@@ -94,7 +100,8 @@ public class ActivityGame extends ActivityHideSystemUI {
         rulesTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Log.d("ActivityGame",
+                        "onClick(): Click detected (Game state: " + game_state + ")");
                 if (game_state == GameState.GAME_OVER) {
                     return;
                 }
@@ -105,31 +112,36 @@ public class ActivityGame extends ActivityHideSystemUI {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                getNextRule(textSwitcher, resources);
+                getNextRule();
             }
         });
 
         restartButton.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
+                Log.d("ActivityGame",
+                        "onLongClick(): Long click detected (Game state: " + game_state + ")");
                 if (game_state == GameState.IN_PROGRESS) {
                     game_state = GameState.GAME_OVER;
 
                     textSwitcher.setInAnimation(slide_in);
                     textSwitcher.setOutAnimation(slide_out);
 
+                    Log.i("ActivityGame", "onLongClick(): Score = " + score);
                     String text = String.format(resources.getString(R.string.game_over), score);
-                    adjustTextSize(textSwitcher, TEXT_SIZE_NORMAL);
+                    adjustTextSize(TEXT_SIZE_NORMAL);
                     textSwitcher.setText(text);
-                    restartButton.setText(R.string.button_replay);
+                    restartButton.setText(R.string.replay_button_text);
 
                 } else if (game_state == GameState.GAME_START ||
                         game_state == GameState.GAME_OVER) {
                     restartGame();
                     finish();
+                    Log.i("ActivityGame", "onLongClick(): End game");
                 }
                 return true;
             }
         });
+        Log.d("ActivityGame", "onCreate(): Done");
     }
 
 
@@ -137,7 +149,10 @@ public class ActivityGame extends ActivityHideSystemUI {
     protected void onStart() {
         super.onStart();
 
+        Log.i("ActivityGame", "onStart(): Starting game");
+
         try {
+            Log.i("ActivityGame", "onStart(): Initializing rules");
             Rules.initializeRules();
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,6 +163,7 @@ public class ActivityGame extends ActivityHideSystemUI {
 
 
     private static void restartGame() {
+        Log.i("ActivityGame", "restartGame(): Restarting game");
         current_rules = Rules.shuffleRules();
         rule_index = 0;
         score = 0;
@@ -163,15 +179,14 @@ public class ActivityGame extends ActivityHideSystemUI {
      * game state: once started, display 'restart' button, display rule
      * game event: on tap, display new rule
      * game event: on restart, go back to start
-     * @param textSwitcher
      */
-    private static void getNextRule(
-        TextSwitcher textSwitcher,
-        Resources resources) {
-
+    private void getNextRule() {
+        Log.i("ActivityGame",
+                "getNextRule(): Getting next rule (Game state: " + game_state + ", Score: " + score + ")");
         game_state = GameState.IN_PROGRESS;
 
         if (rule_index >= current_rules.length) {
+            Log.d("ActivityGame", "getNextRule(): Reshuffling deck");
             current_rules = Rules.shuffleRules();
             rule_index = 0;
         }
@@ -179,11 +194,8 @@ public class ActivityGame extends ActivityHideSystemUI {
         //@TODO formatting - change font size based on length and screen orientation
         //@TODO make sure rules are limited to 256 characters?
         //adjustTextSize(textSwitcher, TEXT_SIZE_NORMAL);
-        //textSwitcher.setText(current_rules[rule_index]);
-        autoAdjustTextSizeAndSetText(
-                textSwitcher,
-                current_rules[rule_index],
-                resources);
+//        textSwitcher.setCurrentText(current_rules[rule_index]);
+        autoAdjustTextSizeAndSetText(current_rules[rule_index]);
         //android:textSize="50sp"
         // portrait 14 * 11 = 154
         // landscape 6 * 21 = 126
@@ -191,24 +203,34 @@ public class ActivityGame extends ActivityHideSystemUI {
         score++;
 
         try {
+            // Sleep to allow animation to finish ?
             Thread.sleep(100);
         } catch (InterruptedException e) { /* Do nothing */ }
     }
 
-    private static void adjustTextSize(
-            TextSwitcher textSwitcher,
-            int textSize) {
-        TextView textView = (TextView) textSwitcher.getChildAt(0);
-        textView.setTextSize(textSize);
+    private void adjustTextSize(int textSize) {
+        Log.d("ActivityGame", "adjustTextSize(): Changing text size to " + textSize);
+
+        // There should always be 2 child views (current and next)
+        Log.d("ActivityGame", "adjustTextSize(): Child count = " + textSwitcher.getChildCount());
+
+        TextView textView1 = (TextView) textSwitcher.getChildAt(0);
+        textView1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+        //textView1.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        Log.d("ActivityGame", "adjustTextSize(): Text on child 1 = " + textView1.getText());
+
+        if (textSwitcher.getChildCount() > 1) {
+            TextView textView2 = (TextView) textSwitcher.getChildAt(1);
+            textView2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+            //textView2.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            Log.d("ActivityGame", "adjustTextSize(): Text on child 2 = " + textView2.getText());
+        }
     }
 
-    private static void autoAdjustTextSizeAndSetText(
-        TextSwitcher textSwitcher,
-        String text,
-        Resources resources) {
+    private void autoAdjustTextSizeAndSetText(String text) {
         // TODO get screen res or size?
         // Calculate based on screen size and string length, whether to use normal, small, or tiny text size.
-        TextView textView = (TextView) textSwitcher.getChildAt(0);
+
         int strLength = text.length();
         // 0.75 - ldpi
         // 1.0 - mdpi
@@ -221,22 +243,46 @@ public class ActivityGame extends ActivityHideSystemUI {
 //        Log.i("info", "density: " + density); //??? adb logcat???
 
         int textSize = TEXT_SIZE_NORMAL;
-//        if (density > 1.99) {
-//            textSize = TEXT_SIZE_NORMAL;
-//        } else if (density > 0.99) {
-//            textSize = TEXT_SIZE_SMALL;
-//        } else {
-//            textSize = TEXT_SIZE_TINY;
-//        }
-        if (strLength > 256) {
-            text = text.substring(0,256);
-            textSize = TEXT_SIZE_TINY;
-        } else if (strLength > 128) {
-            textSize = TEXT_SIZE_SMALL;
+        String tmpText = text;
+
+        if (!isTablet(getApplicationContext())) {
+            if (strLength >= 255) {
+                tmpText = text.substring(0,255) + "...";
+                textSize = 25;
+            } else if (strLength >= 150) {
+                textSize = 25;
+            } else if (strLength >= 115) {
+                textSize = 30;
+            } else if (strLength >= 100) {
+                textSize = 35;
+            } else if (strLength >= 85) {
+                textSize = 40;
+            } else if (strLength >= 70) {
+                textSize = 45;
+            } else {
+                textSize = TEXT_SIZE_NORMAL;
+            }
+        } else {
+            Log.d("ActivityGame", "autoAdjustTextSizeAndSetText(): Tablet detected, not changing text size");
         }
-        //http://stackoverflow.com/questions/16017165/auto-fit-textview-for-android/
-        textView.setTextSize(textSize);
-        textSwitcher.setText(text);
+
+        Log.d("ActivityGame", "autoAdjustTextSizeAndSetText(): Rule string length = " + strLength);
+        adjustTextSize(textSize);
+        // No animation
+        //textSwitcher.setCurrentText(tmpText);
+        // With animation
+        textSwitcher.setText(tmpText);
+    }
+
+    public boolean isTablet(Context context) {
+        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
+        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (xlarge || large);
     }
 
 }
+
+// adb devices
+// adb shell
+// adb logcat ActivityGame:D *:S
+// adb logcat -c

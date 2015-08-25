@@ -22,14 +22,14 @@
             android:id="@+id/text_switcher_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/wood_light"
+            android:background="@drawable/wood_light_light"
             android:padding="5dp">
 
             <TextSwitcher
                 android:id="@+id/text_switcher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="60dp"
+                android:padding="20dp"
                 android:layout_gravity="center"/>
 
             <LinearLayout
@@ -46,7 +46,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/button_text" />
+                    android:text="@string/gameover_button_text" />
 
             </LinearLayout>
 

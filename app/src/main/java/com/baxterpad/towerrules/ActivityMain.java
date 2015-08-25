@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-
 /**
  * Created by Chen on 8/8/2015.
  */
@@ -22,11 +21,12 @@ public class ActivityMain extends ActivityHideSystemUI {
 
         final Resources resources = getResources();
         final View imageView = findViewById(R.id.background_image);
-        final View logoView = findViewById(R.id.company_logo);
         final ImageButton helpButton = (ImageButton) findViewById(R.id.help_button);
         final ImageButton settingsButton = (ImageButton) findViewById(R.id.settings_button);
-        final View appLogoView = findViewById(R.id.app_logo);
-        final View welcomeMessageView = findViewById(R.id.welcome_message);
+
+//        final View logoView = findViewById(R.id.company_logo);
+//        final View appLogoView = findViewById(R.id.app_logo);
+//        final View welcomeMessageView = findViewById(R.id.welcome_message);
 
 //        logoView.setOnClickListener(new View.OnClickListener() {
 //            @Override

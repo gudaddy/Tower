@@ -76,7 +76,8 @@ public class Rules {
         rules[50] = "You must have drink in your other hand whenever you pull a block.";
         rules[51] = "Anyone who picks up their cell phone must drink 1.";
         rules[52] = "Do your best impression of someone at the table.";
-        rules[53] = "You're in the hotseat! Everyone playing may ask you one question and you must answer truthfully.";
+        rules[53] = "You must talk like a robot for the rest of the game.";
+        //rules[53] = "You're in the hotseat! Everyone playing may ask you one question and you must answer truthfully.";
         //rules[53] = "abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef"; // 139
         //rules[53] = "abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef";
         return rules;
