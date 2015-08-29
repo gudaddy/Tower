@@ -1,7 +1,7 @@
 package com.baxterpad.towerrules;
 
-import android.content.Context;
-import android.content.res.Configuration;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import com.baxterpad.towerrules.util.GUITools;
 
 /**
  * Created by Chen on 8/8/2015.
@@ -161,6 +163,46 @@ public class ActivityGame extends ActivityHideSystemUI {
         restartGame();
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.i("ActivityGame", "onBackPressed(): Back press detected");
+        // Only show this popup if game state is IN_PROGRESS
+        // Otherwise, the game is in a state where the back button will just take you
+        // to the main page.
+        if (game_state == GameState.IN_PROGRESS) {
+            new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to exit the game?")
+                .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Same behavior as if the user holds down the restart button
+                        game_state = GameState.GAME_OVER;
+
+                        textSwitcher.setInAnimation(slide_in);
+                        textSwitcher.setOutAnimation(slide_out);
+
+                        Log.i("ActivityGame", "onBackPressed(): Score = " + score);
+                        String text = String.format(resources.getString(R.string.game_over), score);
+                        adjustTextSize(TEXT_SIZE_NORMAL);
+                        textSwitcher.setText(text);
+                        restartButton.setText(R.string.replay_button_text);
+
+                        // Usually, you'll have a finish() call here but we don't want
+                        // that behavior. Rather we want to take the user back to the
+                        // score page.
+                    }
+                })
+                // Positive button is "no" to set the ordering when it is displayed
+                .setPositiveButton("No", null)
+                .show();
+        } else {
+            restartGame();
+            finish();
+            Log.i("ActivityGame", "onBackPressed(): End game");
+        }
+    }
 
     private static void restartGame() {
         Log.i("ActivityGame", "restartGame(): Restarting game");
@@ -245,7 +287,7 @@ public class ActivityGame extends ActivityHideSystemUI {
         int textSize = TEXT_SIZE_NORMAL;
         String tmpText = text;
 
-        if (!isTablet(getApplicationContext())) {
+        if (!GUITools.isTablet(getApplicationContext())) {
             if (strLength >= 255) {
                 tmpText = text.substring(0,255) + "...";
                 textSize = 25;
@@ -273,13 +315,6 @@ public class ActivityGame extends ActivityHideSystemUI {
         // With animation
         textSwitcher.setText(tmpText);
     }
-
-    public boolean isTablet(Context context) {
-        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
-        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
-        return (xlarge || large);
-    }
-
 }
 
 // adb devices
