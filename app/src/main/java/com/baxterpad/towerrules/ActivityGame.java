@@ -1,9 +1,7 @@
 package com.baxterpad.towerrules;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -19,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import com.baxterpad.towerrules.util.GuiTools;
 
 /**
  * Created by Chen on 8/8/2015.
@@ -287,7 +287,7 @@ public class ActivityGame extends ActivityHideSystemUI {
         int textSize = TEXT_SIZE_NORMAL;
         String tmpText = text;
 
-        if (!isTablet(getApplicationContext())) {
+        if (!GuiTools.isTablet(getApplicationContext())) {
             if (strLength >= 255) {
                 tmpText = text.substring(0,255) + "...";
                 textSize = 25;
@@ -315,13 +315,6 @@ public class ActivityGame extends ActivityHideSystemUI {
         // With animation
         textSwitcher.setText(tmpText);
     }
-
-    public boolean isTablet(Context context) {
-        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE);
-        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
-        return (xlarge || large);
-    }
-
 }
 
 // adb devices
