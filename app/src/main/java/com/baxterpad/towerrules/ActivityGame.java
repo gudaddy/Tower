@@ -18,7 +18,7 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.baxterpad.towerrules.util.GuiTools;
+import com.baxterpad.towerrules.util.GUITools;
 
 /**
  * Created by Chen on 8/8/2015.
@@ -287,7 +287,7 @@ public class ActivityGame extends ActivityHideSystemUI {
         int textSize = TEXT_SIZE_NORMAL;
         String tmpText = text;
 
-        if (!GuiTools.isTablet(getApplicationContext())) {
+        if (!GUITools.isTablet(getApplicationContext())) {
             if (strLength >= 255) {
                 tmpText = text.substring(0,255) + "...";
                 textSize = 25;

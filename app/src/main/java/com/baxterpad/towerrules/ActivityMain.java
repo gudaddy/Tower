@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.baxterpad.towerrules.util.GuiTools;
+import com.baxterpad.towerrules.util.GUITools;
 
 /**
  * Created by Chen on 8/8/2015.
@@ -33,7 +33,7 @@ public class ActivityMain extends ActivityHideSystemUI {
 //        final View appLogoView = findViewById(R.id.app_logo);
 
         // Get image from ImageView, on phones (not tablets), resize the image to fit
-        if (!GuiTools.isTablet(getApplicationContext())) {
+        if (!GUITools.isTablet(getApplicationContext())) {
             ImageView appLogo = (ImageView)findViewById(R.id.app_logo);
             Bitmap bitmap = ((BitmapDrawable)appLogo.getDrawable()).getBitmap();
             if (bitmap != null) {
