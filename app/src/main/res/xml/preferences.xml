@@ -15,6 +15,10 @@
             android:defaultValue="standard">
         </ListPreference>
 
+        <Preference
+            android:key="pref_key_edit_rules"
+            android:title="@string/edit_rules"/>
+
         <ListPreference
             android:key="pref_key_wallpaper"
             android:title="Choose wallpaper"
