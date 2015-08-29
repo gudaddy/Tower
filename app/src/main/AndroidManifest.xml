@@ -56,6 +56,19 @@
                 android:value=".ActivityMain" />
         </activity>
 
+
+        <activity
+            android:name=".ActivityEditRules"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/FullscreenTheme"
+            android:screenOrientation="landscape"
+            android:parentActivityName=".ActivityMain" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityMain" />
+        </activity>
+
     </application>
 
 

@@ -3,6 +3,7 @@ package com.baxterpad.towerrules;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -64,6 +65,17 @@ public class ActivitySettings extends ActivityHideSystemUI {
                         return false;
                     }
                 });
+
+//            findPreference("pref_key_edit_rules").setOnPreferenceClickListener(
+//                new Preference.OnPreferenceClickListener() {
+//                    @Override
+//                    public boolean onPreferenceClick(Preference p) {
+//                        Intent intent = new Intent(p.getContext(), ActivityEditRules.class);
+//                        startActivity(intent);
+//                        return false;
+//                    }
+//
+//                });
         }
     }
 

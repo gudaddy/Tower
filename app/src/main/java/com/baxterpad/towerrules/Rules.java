@@ -1,5 +1,11 @@
 package com.baxterpad.towerrules;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import java.util.Random;
 
 //import com.baxterpad.towerrules.Network;
@@ -29,7 +35,7 @@ public class Rules {
         rules[3] = "Whenever you speak you must talk into a pretend microphone.";
         rules[4] = "Drink, then pull another piece.";
         rules[5] = "Group chooses shot for you to take (ex. Pickle juice).";
-        rules[6] = "You take a shot.";
+        rules[6] = "You take a shot. Jenga got you good";
         rules[7] = "Give 1!";
         rules[8] = "Give 2!";
         rules[9] = "Give 3!";
@@ -155,4 +161,11 @@ public class Rules {
 //        }
         return rules;
     }
+
+    public static String[] getRuleList (){
+        return rules;
+    }
+
+
+
 }
