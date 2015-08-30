@@ -21,5 +21,16 @@
     <string name="first_block">Pull a block...\nTap for next rule</string>
     <string name="game_over">Game Over!\nScore: %1$d</string>
 
-    <string name="edit_rules">Edit Rules:</string>
+    <string name="edit_rules">Edit Rules</string>
+
+    <string name="about_us_title">About Us</string>
+    <string name="about_us_description_1">We wanted to add a twist to a classic game. Hope you enjoy :)</string>
+    <string name="about_us_description_2">Thank you for using our app! Please help us make this game better. If you had any issues or would like to make a suggestion, please submit feedback.</string>
+    <string name="about_us_contact_info">Contact Info</string>
+    <string name="about_us_email">something@gmail.com</string>
+    <string name="about_us_app_info">App Info</string>
+    <string name="about_us_app_version">Version 0.1.0</string>
+    <string name="about_us_app_build">Build #####</string>
+    <string name="about_us_copyright">Copyright \u00A9 Bmore Innovation 2015</string>
+
 </resources>

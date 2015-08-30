@@ -29,10 +29,10 @@
             android:defaultValue="wood_grain">
         </ListPreference>
 
-        <CheckBoxPreference
-            android:key="pref_key_sound"
-            android:title="Enable sound"
-            android:defaultValue="false" />
+        <!--<CheckBoxPreference-->
+            <!--android:key="pref_key_sound"-->
+            <!--android:title="Enable sound"-->
+            <!--android:defaultValue="false" />-->
 
     </PreferenceCategory>
 
