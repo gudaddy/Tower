@@ -1,5 +1,6 @@
 package com.baxterpad.towerrules;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -41,7 +42,8 @@ public class ActivityHideSystemUI extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
         GUITools.hideUI(this);
     }
 }

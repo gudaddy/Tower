@@ -1,6 +1,5 @@
 package com.baxterpad.towerrules.util;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -20,10 +19,13 @@ public class GUITools {
 
     public static void hideUI(Activity activity) {
         View decorView = activity.getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        // Hide the status and navigation bars.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
         decorView.setSystemUiVisibility(uiOptions);
-        ActionBar actionBar = activity.getActionBar();
-        actionBar.hide();
     }
 }
