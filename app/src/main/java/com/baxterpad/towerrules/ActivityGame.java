@@ -95,8 +95,10 @@ public class ActivityGame extends ActivityHideSystemUI {
         slide_out = AnimationUtils.loadAnimation(this,android.R.anim.slide_out_right);
 
         // set the animation type of textSwitcher
-        textSwitcher.setInAnimation(fade_in);
-        textSwitcher.setOutAnimation(fade_out);
+        //textSwitcher.setInAnimation(fade_in);
+        //textSwitcher.setOutAnimation(fade_out);
+        textSwitcher.setInAnimation(slide_in);
+        textSwitcher.setOutAnimation(slide_out);
 
         // Action based on click
         rulesTextView.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +142,8 @@ public class ActivityGame extends ActivityHideSystemUI {
                     finish();
                     Log.i("ActivityGame", "onLongClick(): End game");
                 }
+
+                GUITools.hideUI(ActivityGame.this);
                 return true;
             }
         });
@@ -161,6 +165,8 @@ public class ActivityGame extends ActivityHideSystemUI {
         }
 
         restartGame();
+
+        GUITools.hideUI(ActivityGame.this);
     }
 
     @Override
@@ -192,10 +198,22 @@ public class ActivityGame extends ActivityHideSystemUI {
                         // Usually, you'll have a finish() call here but we don't want
                         // that behavior. Rather we want to take the user back to the
                         // score page.
+                        GUITools.hideUI(ActivityGame.this);
                     }
                 })
                 // Positive button is "no" to set the ordering when it is displayed
-                .setPositiveButton("No", null)
+                .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GUITools.hideUI(ActivityGame.this);
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        GUITools.hideUI(ActivityGame.this);
+                    }
+                })
                 .show();
         } else {
             restartGame();

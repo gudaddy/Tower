@@ -82,4 +82,10 @@ public class ActivityMain extends ActivityHideSystemUI {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GUITools.hideUI(ActivityMain.this);
+    }
 }
