@@ -32,23 +32,35 @@
                 android:padding="20dp"
                 android:layout_gravity="center"/>
 
-            <LinearLayout
-                android:id="@+id/reset_button_view" style="?metaButtonBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="horizontal"
-                android:background="@color/black_overlay"
-                tools:ignore="UselessParent">
+            <Button
+                android:id="@+id/restart_button"
+                android:layout_gravity="bottom|center"
+                android:text="@string/gameover_button_text"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
+                android:background="@drawable/buttonshape"/>
+
+            <!-- Legacy button left in here for future reference -->
+            <!--<LinearLayout-->
+                <!--android:id="@+id/reset_button_view" style="?metaButtonBarStyle"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:background="@color/black_overlay"-->
+                <!--tools:ignore="UselessParent">-->
                 <!--android:padding="10dp"-->
 
-                <Button android:id="@+id/restart_button" style="?metaButtonBarButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/gameover_button_text" />
+                <!--<Button android:id="@+id/restart_button"-->
+                    <!--style="?metaButtonBarButtonStyle"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="@string/gameover_button_text" />-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
         </FrameLayout>
 
