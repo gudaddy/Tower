@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -94,7 +95,8 @@ public class ActivityGame extends ActivityHideSystemUI {
         slide_in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
         slide_out = AnimationUtils.loadAnimation(this,android.R.anim.slide_out_right);
 
-        // set the animation type of textSwitcher
+        // Set the animation type of textSwitcher
+        // Slide animation seems smoother than fade
         //textSwitcher.setInAnimation(fade_in);
         //textSwitcher.setOutAnimation(fade_out);
         textSwitcher.setInAnimation(slide_in);
@@ -276,13 +278,18 @@ public class ActivityGame extends ActivityHideSystemUI {
 
         TextView textView1 = (TextView) textSwitcher.getChildAt(0);
         textView1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
-        //textView1.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        // This fixes the alignment issues when switching text
+        textView1.setLayoutParams(
+                new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        textView1.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
         Log.d("ActivityGame", "adjustTextSize(): Text on child 1 = " + textView1.getText());
 
         if (textSwitcher.getChildCount() > 1) {
             TextView textView2 = (TextView) textSwitcher.getChildAt(1);
             textView2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
-            //textView2.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            textView2.setLayoutParams(
+                    new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+            textView2.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
             Log.d("ActivityGame", "adjustTextSize(): Text on child 2 = " + textView2.getText());
         }
     }
@@ -298,9 +305,6 @@ public class ActivityGame extends ActivityHideSystemUI {
         // 2.0 - xhdpi
         // 3.0 - xxhdpi
         // 4.0 - xxxhdpi
-
-//        float density = resources.getDisplayMetrics().density;
-//        Log.i("info", "density: " + density); //??? adb logcat???
 
         int textSize = TEXT_SIZE_NORMAL;
         String tmpText = text;
