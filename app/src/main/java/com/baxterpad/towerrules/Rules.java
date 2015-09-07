@@ -1,11 +1,8 @@
 package com.baxterpad.towerrules;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.util.Log;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 /**
@@ -13,9 +10,40 @@ import java.util.Random;
  */
 public class Rules {
 
-    private static String[] rules = new String[54];
+    private static String[] rules;
+    private static LinkedList<String> rulesHistory;
+    private static int rule_index = 0;
+    private static final int RULE_HISTORY_SIZE = 10;
 
-    public static String[] setDefaultRules() throws Exception {
+    public static String[] setDeveloperRules() {
+        rules = new String[20];
+        rules[0] = "Rule 0";
+        rules[1] = "Rule 1";
+        rules[2] = "Rule 2";
+        rules[3] = "Rule 3";
+        rules[4] = "Rule 4";
+        rules[5] = "Rule 5";
+        rules[6] = "Rule 6";
+        rules[7] = "Rule 7";
+        rules[8] = "Rule 8";
+        rules[9] = "Rule 9";
+        rules[10] = "Rule 10";
+        rules[11] = "Rule 11";
+        rules[12] = "Rule 12";
+        rules[13] = "Rule 13";
+        rules[14] = "Rule 14";
+        rules[15] = "Rule 15";
+        rules[16] = "Rule 16";
+        rules[17] = "Rule 17";
+        rules[18] = "Rule 18";
+        rules[19] = "Rule 19";
+        //rules[53] = "abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef"; // 139
+        //rules[53] = "abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef";
+        return rules;
+    }
+
+    public static String[] setDefaultRules() {
+        rules = new String[54];
         rules[0] = "Drink one for every letter in your last name.";
         rules[1] = "Pick someone to take a shot.";
         rules[2] = "Social drink!";
@@ -70,14 +98,10 @@ public class Rules {
         rules[51] = "Anyone who picks up their cell phone must drink 1 for the remainder of the game.";
         rules[52] = "Do your best impression of someone at the table.";
         rules[53] = "You must talk like a robot for the rest of the game.";
-        //rules[53] = "You're in the hotseat! Everyone playing may ask you one question and you must answer truthfully.";
-        //rules[53] = "abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef"; // 139
-        //rules[53] = "abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef abcdef";
         return rules;
     }
 
-
-    public static String[] shuffleRules() {
+    private static String[] shuffle() {
         String[] temp_rules = new String[rules.length];
         for (int i = 0; i < rules.length; i++) {
             temp_rules[i] = rules[i];
@@ -101,15 +125,80 @@ public class Rules {
         return temp_rules;
     }
 
-    public static String[] initializeRules() throws Exception{
-        setDefaultRules();
+    public static void initializeRules() {
+        Log.d("Rules", "initializeRules(): Initializing rules to default rules list");
+        rules = setDefaultRules();
+//        rules = setDeveloperRules();
+        rulesHistory = new LinkedList<String>();
+//        printCurrentRules();
+    }
+
+    public static void shuffleRules() {
+        Log.d("Rules", "shuffleRules(): Shuffling rules");
+        rules = shuffle();
+        rule_index = 0;
+    }
+
+    public static String nextRule() {
+        if (rule_index >= rules.length) {
+            shuffleRules();
+        }
+
+        printLastTen();
+
+        String nextRule = rules[rule_index];
+
+        // This checks if the selected rule was already selected
+        // recently and if so, swaps it with another rule.
+        // This algorithm assumes that the list of rules > (2 * RULE_HISTORY_SIZE)
+        // and that there are no duplicates throughout the list.
+        if (rulesHistory.contains(nextRule)) {
+            Log.d("Rules", "Duplicate rule found, swapping");
+            Log.d("Rules", "Current index " + rule_index);
+            int temp_index = rule_index;
+            String temp_rule = "";
+            do {
+                temp_index++;
+                temp_rule = rules[temp_index];
+            } while (temp_index < rules.length && rulesHistory.contains(temp_rule));
+            Log.d("Rules", "New index " + temp_index);
+            if (temp_rule.length() > 0) {
+                temp_rule = rules[rule_index];
+                rules[rule_index] = rules[temp_index];
+                rules[temp_index] = temp_rule;
+                nextRule = rules[rule_index];
+                Log.d("Rules", "Swapped " + temp_rule + " with " + nextRule);
+            } else {
+                Log.e("Rules", "Unable to perform swap, reusing rule " + nextRule);
+            }
+
+        }
+
+        rulesHistory.addLast(nextRule);
+        while (rulesHistory.size() > RULE_HISTORY_SIZE) {
+            rulesHistory.removeFirst();
+        }
+
+        rule_index++;
+        return nextRule;
+    }
+
+    public static String[] getRuleList () {
         return rules;
     }
 
-    public static String[] getRuleList (){
-        return rules;
+    public static void printCurrentRules() {
+        Log.d("Rules", "Current Rules:");
+        for (int i = 0; i < rules.length; i++) {
+            if (rules[i] != null && rules[i].length() > 0) {
+                Log.d("Rules", i + ": " + rules[i]);
+            }
+        }
     }
-
-
-
+    public static void printLastTen() {
+        Log.d("Rules", "Last 10 Rules:");
+        for (int i = 0; i < rulesHistory.size(); i++) {
+            Log.d("Rules", i + ": " + rulesHistory.get(i));
+        }
+    }
 }

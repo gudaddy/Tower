@@ -56,8 +56,6 @@ public class ActivityGame extends ActivityHideSystemUI {
 
     private static GameState game_state = GameState.GAME_START;
     private static int score = 0;
-    private static String[] current_rules;
-    private static int rule_index = 0;
 
     private final static int TEXT_SIZE_NORMAL = 50;
     private final static int TEXT_SIZE_SMALL = 45;
@@ -163,15 +161,9 @@ public class ActivityGame extends ActivityHideSystemUI {
     @Override
     protected void onStart() {
         super.onStart();
-
         Log.i("ActivityGame", "onStart(): Starting game");
 
-        try {
-            Log.i("ActivityGame", "onStart(): Initializing rules");
-            Rules.initializeRules();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Rules.initializeRules();
 
         restartGame();
 
@@ -233,8 +225,7 @@ public class ActivityGame extends ActivityHideSystemUI {
 
     private static void restartGame() {
         Log.i("ActivityGame", "restartGame(): Restarting game");
-        current_rules = Rules.shuffleRules();
-        rule_index = 0;
+        Rules.shuffleRules();
         score = 0;
         game_state = GameState.GAME_START;
     }
@@ -254,21 +245,9 @@ public class ActivityGame extends ActivityHideSystemUI {
                 "getNextRule(): Getting next rule (Game state: " + game_state + ", Score: " + score + ")");
         game_state = GameState.IN_PROGRESS;
 
-        if (rule_index >= current_rules.length) {
-            Log.d("ActivityGame", "getNextRule(): Reshuffling deck");
-            current_rules = Rules.shuffleRules();
-            rule_index = 0;
-        }
-
-        //@TODO formatting - change font size based on length and screen orientation
+        String rule = Rules.nextRule();
         //@TODO make sure rules are limited to 256 characters?
-        //adjustTextSize(textSwitcher, TEXT_SIZE_NORMAL);
-//        textSwitcher.setCurrentText(current_rules[rule_index]);
-        autoAdjustTextSizeAndSetText(current_rules[rule_index]);
-        //android:textSize="50sp"
-        // portrait 14 * 11 = 154
-        // landscape 6 * 21 = 126
-        rule_index++;
+        autoAdjustTextSizeAndSetText(rule);
         score++;
 
         try {
@@ -302,7 +281,6 @@ public class ActivityGame extends ActivityHideSystemUI {
     }
 
     private void autoAdjustTextSizeAndSetText(String text) {
-        // TODO get screen res or size?
         // Calculate based on screen size and string length, whether to use normal, small, or tiny text size.
 
         int strLength = text.length();
