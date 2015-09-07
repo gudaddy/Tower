@@ -22,7 +22,7 @@ public class ActivityMain extends ActivityHideSystemUI {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("ActivityMain",
+        Log.d("TowerRules_ActMain",
                 "onCreate(): Created activity");
 
         setContentView(R.layout.activity_main);
@@ -90,7 +90,7 @@ public class ActivityMain extends ActivityHideSystemUI {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("ActivityMain",
+        Log.d("TowerRules_ActMain",
                 "onStart(): Started activity");
         GUITools.hideUI(ActivityMain.this);
 
@@ -104,16 +104,17 @@ public class ActivityMain extends ActivityHideSystemUI {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("ActivityMain",
+        Log.d("TowerRules_ActMain",
                 "onResume(): Resumed activity");
     }
 
     public static void setBackgroundFromPref(View view, String key) {
-        Log.d("ActivityMain",
+        Log.i("TowerRules_ActMain",
                 "setBackgroundFromPref(): Background Pref = " + key);
 
         if (key == null || key.length() == 0) {
-            Log.e("ActivityMain", "onCreate(): Missing background preference. Setting to default");
+            Log.e("TowerRules_ActMain",
+                    "setBackgroundFromPref(): Missing background preference. Setting to default");
             view.setBackgroundResource(R.drawable.wood_light_light);
         } else if (key.equals("wood_grain_1")) {
             view.setBackgroundResource(R.drawable.wood_light_light);
@@ -122,9 +123,9 @@ public class ActivityMain extends ActivityHideSystemUI {
         } else if (key.equals("wood_grain_3")) {
             view.setBackgroundResource(R.drawable.wood_dark);
         } else {
-            Log.e("ActivityMain", "onCreate(): Unknown background preference. Setting to default");
+            Log.e("TowerRules_ActMain",
+                    "setBackgroundFromPref(): Unknown background preference. Setting to default");
             view.setBackgroundResource(R.drawable.wood_light_light);
         }
     }
-
 }

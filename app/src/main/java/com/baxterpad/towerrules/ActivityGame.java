@@ -66,7 +66,7 @@ public class ActivityGame extends ActivityHideSystemUI {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("ActivityGame", "onCreate(): Creating view");
+        Log.d("TowerRules_ActGame", "onCreate(): Creating view");
         setContentView(R.layout.activity_game);
 
         // UI objects for modifying the UI based on game state
@@ -111,7 +111,7 @@ public class ActivityGame extends ActivityHideSystemUI {
         rulesTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("ActivityGame",
+                Log.d("TowerRules_ActGame",
                         "onClick(): Click detected (Game state: " + game_state + ")");
                 if (game_state == GameState.GAME_OVER) {
                     return;
@@ -129,7 +129,7 @@ public class ActivityGame extends ActivityHideSystemUI {
 
         restartButton.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                Log.d("ActivityGame",
+                Log.d("TowerRules_ActGame",
                         "onLongClick(): Long click detected (Game state: " + game_state + ")");
                 if (game_state == GameState.IN_PROGRESS) {
                     game_state = GameState.GAME_OVER;
@@ -137,7 +137,7 @@ public class ActivityGame extends ActivityHideSystemUI {
                     textSwitcher.setInAnimation(slide_in);
                     textSwitcher.setOutAnimation(slide_out);
 
-                    Log.i("ActivityGame", "onLongClick(): Score = " + score);
+                    Log.i("TowerRules_ActGame", "onLongClick(): Score = " + score);
                     String text = String.format(resources.getString(R.string.game_over), score);
                     adjustTextSize(TEXT_SIZE_NORMAL);
                     textSwitcher.setText(text);
@@ -147,23 +147,25 @@ public class ActivityGame extends ActivityHideSystemUI {
                         game_state == GameState.GAME_OVER) {
                     restartGame();
                     finish();
-                    Log.i("ActivityGame", "onLongClick(): End game");
+                    Log.i("TowerRules_ActGame", "onLongClick(): End game");
                 }
 
                 GUITools.hideUI(ActivityGame.this);
                 return true;
             }
         });
-        Log.d("ActivityGame", "onCreate(): Done");
+        Log.d("TowerRules_ActGame", "onCreate(): Done");
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("ActivityGame", "onStart(): Starting game");
+        Log.i("TowerRules_ActGame", "onStart(): Starting game");
 
-        Rules.initializeRules();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String rulesPref = sharedPref.getString(ActivitySettings.KEY_RULES, "");
+        setRulesFromPref(rulesPref);
 
         restartGame();
 
@@ -172,7 +174,7 @@ public class ActivityGame extends ActivityHideSystemUI {
 
     @Override
     public void onBackPressed() {
-        Log.i("ActivityGame", "onBackPressed(): Back press detected");
+        Log.d("TowerRules_ActGame", "onBackPressed(): Back press detected");
         // Only show this popup if game state is IN_PROGRESS
         // Otherwise, the game is in a state where the back button will just take you
         // to the main page.
@@ -190,7 +192,7 @@ public class ActivityGame extends ActivityHideSystemUI {
                         textSwitcher.setInAnimation(slide_in);
                         textSwitcher.setOutAnimation(slide_out);
 
-                        Log.i("ActivityGame", "onBackPressed(): Score = " + score);
+                        Log.i("TowerRules_ActGame", "onBackPressed(): Score = " + score);
                         String text = String.format(resources.getString(R.string.game_over), score);
                         adjustTextSize(TEXT_SIZE_NORMAL);
                         textSwitcher.setText(text);
@@ -219,12 +221,31 @@ public class ActivityGame extends ActivityHideSystemUI {
         } else {
             restartGame();
             finish();
-            Log.i("ActivityGame", "onBackPressed(): End game");
+            Log.i("TowerRules_ActGame", "onBackPressed(): End game");
+        }
+    }
+
+    public static void setRulesFromPref(String key) {
+        Log.i("TowerRules_ActGame",
+                "setRulesFromPref(): Rules Pref = " + key);
+
+        if (key == null || key.length() == 0) {
+            Log.e("TowerRules_ActGame",
+                    "setRulesFromPref(): Missing rules preference. Setting to default");
+            Rules.initializeRules();
+        } else if (key.equals("standard")) {
+            Rules.initializeRules();
+        } else if (key.equals("developer")) {
+            Rules.initializeDevRules();
+        } else {
+            Log.e("TowerRules_ActGame",
+                    "setRulesFromPref(): Unknown rules preference. Setting to default");
+            Rules.initializeRules();
         }
     }
 
     private static void restartGame() {
-        Log.i("ActivityGame", "restartGame(): Restarting game");
+        Log.i("TowerRules_ActGame", "restartGame(): Restarting game");
         Rules.shuffleRules();
         score = 0;
         game_state = GameState.GAME_START;
@@ -241,7 +262,7 @@ public class ActivityGame extends ActivityHideSystemUI {
      * game event: on restart, go back to start
      */
     private void getNextRule() {
-        Log.i("ActivityGame",
+        Log.i("TowerRules_ActGame",
                 "getNextRule(): Getting next rule (Game state: " + game_state + ", Score: " + score + ")");
         game_state = GameState.IN_PROGRESS;
 
@@ -257,10 +278,10 @@ public class ActivityGame extends ActivityHideSystemUI {
     }
 
     private void adjustTextSize(int textSize) {
-        Log.d("ActivityGame", "adjustTextSize(): Changing text size to " + textSize);
+        Log.d("TowerRules_ActGame", "adjustTextSize(): Changing text size to " + textSize);
 
         // There should always be 2 child views (current and next)
-        Log.d("ActivityGame", "adjustTextSize(): Child count = " + textSwitcher.getChildCount());
+        Log.d("TowerRules_ActGame", "adjustTextSize(): Child count = " + textSwitcher.getChildCount());
 
         TextView textView1 = (TextView) textSwitcher.getChildAt(0);
         textView1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
@@ -268,7 +289,7 @@ public class ActivityGame extends ActivityHideSystemUI {
         textView1.setLayoutParams(
                 new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
         textView1.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        Log.d("ActivityGame", "adjustTextSize(): Text on child 1 = " + textView1.getText());
+        Log.d("TowerRules_ActGame", "adjustTextSize(): Text on child 1 = " + textView1.getText());
 
         if (textSwitcher.getChildCount() > 1) {
             TextView textView2 = (TextView) textSwitcher.getChildAt(1);
@@ -276,7 +297,7 @@ public class ActivityGame extends ActivityHideSystemUI {
             textView2.setLayoutParams(
                     new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
             textView2.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-            Log.d("ActivityGame", "adjustTextSize(): Text on child 2 = " + textView2.getText());
+            Log.d("TowerRules_ActGame", "adjustTextSize(): Text on child 2 = " + textView2.getText());
         }
     }
 
@@ -312,10 +333,10 @@ public class ActivityGame extends ActivityHideSystemUI {
                 textSize = TEXT_SIZE_NORMAL;
             }
         } else {
-            Log.d("ActivityGame", "autoAdjustTextSizeAndSetText(): Tablet detected, not changing text size");
+            Log.d("TowerRules_ActGame", "autoAdjustTextSizeAndSetText(): Tablet detected, not changing text size");
         }
 
-        Log.d("ActivityGame", "autoAdjustTextSizeAndSetText(): Rule string length = " + strLength);
+        Log.d("TowerRules_ActGame", "autoAdjustTextSizeAndSetText(): Rule string length = " + strLength);
         adjustTextSize(textSize);
         // No animation
         //textSwitcher.setCurrentText(tmpText);

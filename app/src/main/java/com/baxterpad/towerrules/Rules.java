@@ -13,7 +13,7 @@ public class Rules {
     private static String[] rules;
     private static LinkedList<String> rulesHistory;
     private static int rule_index = 0;
-    private static final int RULE_HISTORY_SIZE = 10;
+    private static final int RULE_HISTORY_SIZE = 9;
 
     public static String[] setDeveloperRules() {
         rules = new String[20];
@@ -128,13 +128,30 @@ public class Rules {
     public static void initializeRules() {
         Log.d("Rules", "initializeRules(): Initializing rules to default rules list");
         rules = setDefaultRules();
-//        rules = setDeveloperRules();
         rulesHistory = new LinkedList<String>();
 //        printCurrentRules();
     }
 
+    public static void initializeDevRules() {
+        Log.d("TowerRules_Rules", "initializeDevRules(): Initializing rules to developer rules list");
+        rules = setDeveloperRules();
+        rulesHistory = new LinkedList<String>();
+    }
+
+    public static void initializeKidsRules() {
+        Log.d("TowerRules_Rules", "initializeKidsRules(): Initializing rules to kids rules list");
+        rules = setDefaultRules();
+        rulesHistory = new LinkedList<String>();
+    }
+
+    public static void initializeCustomRules() {
+        Log.d("TowerRules_Rules", "initializeCustomRules(): Initializing rules to custom rules list");
+        rules = setDefaultRules();
+        rulesHistory = new LinkedList<String>();
+    }
+
     public static void shuffleRules() {
-        Log.d("Rules", "shuffleRules(): Shuffling rules");
+        Log.d("TowerRules_Rules", "shuffleRules(): Shuffling rules");
         rules = shuffle();
         rule_index = 0;
     }
@@ -153,23 +170,23 @@ public class Rules {
         // This algorithm assumes that the list of rules > (2 * RULE_HISTORY_SIZE)
         // and that there are no duplicates throughout the list.
         if (rulesHistory.contains(nextRule)) {
-            Log.d("Rules", "Duplicate rule found, swapping");
-            Log.d("Rules", "Current index " + rule_index);
+            Log.d("TowerRules_Rules", "Duplicate rule found, swapping");
+            Log.d("TowerRules_Rules", "Current index " + rule_index);
             int temp_index = rule_index;
             String temp_rule = "";
             do {
                 temp_index++;
                 temp_rule = rules[temp_index];
             } while (temp_index < rules.length && rulesHistory.contains(temp_rule));
-            Log.d("Rules", "New index " + temp_index);
+            Log.d("TowerRules_Rules", "New index " + temp_index);
             if (temp_rule.length() > 0) {
                 temp_rule = rules[rule_index];
                 rules[rule_index] = rules[temp_index];
                 rules[temp_index] = temp_rule;
                 nextRule = rules[rule_index];
-                Log.d("Rules", "Swapped " + temp_rule + " with " + nextRule);
+                Log.d("TowerRules_Rules", "Swapped " + temp_rule + " with " + nextRule);
             } else {
-                Log.e("Rules", "Unable to perform swap, reusing rule " + nextRule);
+                Log.e("TowerRules_Rules", "Unable to perform swap, reusing rule " + nextRule);
             }
 
         }
@@ -188,17 +205,18 @@ public class Rules {
     }
 
     public static void printCurrentRules() {
-        Log.d("Rules", "Current Rules:");
+        Log.d("TowerRules_Rules", "Current Rules:");
         for (int i = 0; i < rules.length; i++) {
             if (rules[i] != null && rules[i].length() > 0) {
-                Log.d("Rules", i + ": " + rules[i]);
+                Log.d("TowerRules_Rules", i + ": " + rules[i]);
             }
         }
     }
+
     public static void printLastTen() {
-        Log.d("Rules", "Last 10 Rules:");
+        Log.d("TowerRules_Rules", "Last 10 Rules:");
         for (int i = 0; i < rulesHistory.size(); i++) {
-            Log.d("Rules", i + ": " + rulesHistory.get(i));
+            Log.d("TowerRules_Rules", i + ": " + rulesHistory.get(i));
         }
     }
 }

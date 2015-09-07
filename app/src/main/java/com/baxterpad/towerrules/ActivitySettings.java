@@ -29,6 +29,7 @@ import android.widget.TextView;
 public class ActivitySettings extends ActivityHideSystemUI {
 
     public static final String KEY_WALLPAPER = "pref_key_wallpaper";
+    public static final String KEY_RULES = "pref_key_rules";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,7 @@ public class ActivitySettings extends ActivityHideSystemUI {
         }
 
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            Log.d("ActivitySettings", "onSharedPreferenceChanged(): Shared preference changed");
+            Log.d("TowerRules_ActSettings", "onSharedPreferenceChanged(): Shared preference changed");
         }
     }
 
