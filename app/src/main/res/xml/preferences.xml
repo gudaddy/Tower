@@ -26,7 +26,7 @@
             android:summary="Customize background"
             android:entries="@array/backgrounds"
             android:entryValues="@array/background_values"
-            android:defaultValue="wood_grain">
+            android:defaultValue="wood_grain_1">
         </ListPreference>
 
         <!--<CheckBoxPreference-->

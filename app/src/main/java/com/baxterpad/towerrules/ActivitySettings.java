@@ -4,11 +4,17 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +28,8 @@ import android.widget.TextView;
 // Don't hide action bar for settings. That's why this class doesn't extend ActivityHideSystemUI
 public class ActivitySettings extends ActivityHideSystemUI {
 
+    public static final String KEY_WALLPAPER = "pref_key_wallpaper";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +40,8 @@ public class ActivitySettings extends ActivityHideSystemUI {
                 .commit();
     }
 
-    public static class SettingsFragment extends PreferenceFragment {
+    public static class SettingsFragment extends PreferenceFragment
+            implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -76,6 +85,24 @@ public class ActivitySettings extends ActivityHideSystemUI {
 //                    }
 //
 //                });
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            getPreferenceScreen().getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            getPreferenceScreen().getSharedPreferences()
+                    .unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            Log.d("ActivitySettings", "onSharedPreferenceChanged(): Shared preference changed");
         }
     }
 
@@ -152,7 +179,7 @@ public class ActivitySettings extends ActivityHideSystemUI {
                 case R.id.feedback_submit_button:
                     if (editText != null && editText.getText() != null) {
                         feedback_message = editText.getText().toString();
-                        sendEmail();
+                        sendEmail(v);
                         alert(v);
                     }
 
@@ -177,8 +204,54 @@ public class ActivitySettings extends ActivityHideSystemUI {
             alert.show();
         }
 
-        private static void sendEmail() {
-            //TODO implement
+        private static void sendEmail(View v) {
+            //TODO implement our own email/feedback service
+            Resources res = v.getContext().getResources();
+
+            String email_subject_template =
+                    "%1$s %2$s feedback";
+
+            String email_subject = String.format(email_subject_template,
+                    res.getString(R.string.app_name),
+                    res.getString(R.string.app_version));
+
+            String email_body_template =
+                    "===========================\n" +
+                    "User feedback:\n" +
+                    "===========================\n" +
+                    "%1$s\n" +
+                    "\n" +
+                    "===========================\n" +
+                    "Device Information:\n" +
+                    "===========================\n" +
+                    "Version:       %2$s (%3$d)\n" +
+                    "Manufacture:   %4$s\n" +
+                    "Model:         %5$s\n" +
+                    "Resolution:    %6$dx%7$d\n" +
+                    "Density:       %8$d (%9$f)\n" +
+                    "===========================\n";
+
+            DisplayMetrics metrics = res.getDisplayMetrics();
+
+            String email_body = String.format(email_body_template,
+                    feedback_message,
+                    Build.VERSION.RELEASE,
+                    Build.VERSION.SDK_INT,
+                    Build.MANUFACTURER,
+                    Build.MODEL,
+                    metrics.widthPixels,
+                    metrics.heightPixels,
+                    metrics.densityDpi,
+                    metrics.density);
+
+            Intent emailIntent =
+                    new Intent(Intent.ACTION_SENDTO,
+                            Uri.fromParts("mailto",
+                                    res.getString(R.string.about_us_email),
+                                    null));
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, email_subject);
+            emailIntent.putExtra(Intent.EXTRA_TEXT, email_body);
+            v.getContext().startActivity(Intent.createChooser(emailIntent, "Send email..."));
         }
 
         private static void resetFeedback() {

@@ -1,10 +1,13 @@
 package com.baxterpad.towerrules;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,8 +22,8 @@ public class ActivityMain extends ActivityHideSystemUI {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        addPreferencesFromResource(R.xml.preferences);
+        Log.d("ActivityMain",
+                "onCreate(): Created activity");
 
         setContentView(R.layout.activity_main);
 
@@ -28,9 +31,6 @@ public class ActivityMain extends ActivityHideSystemUI {
         final View imageView = findViewById(R.id.background_image);
         final ImageButton helpButton = (ImageButton) findViewById(R.id.help_button);
         final ImageButton settingsButton = (ImageButton) findViewById(R.id.settings_button);
-
-//        final View logoView = findViewById(R.id.company_logo);
-//        final View appLogoView = findViewById(R.id.app_logo);
 
         // Get image from ImageView, on phones (not tablets), resize the image to fit
         if (!GUITools.isTablet(getApplicationContext())) {
@@ -50,6 +50,10 @@ public class ActivityMain extends ActivityHideSystemUI {
                 appLogo.setVisibility(View.INVISIBLE);
             }
         }
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String backgroundPref = sharedPref.getString(ActivitySettings.KEY_WALLPAPER, "");
+        setBackgroundFromPref(imageView, backgroundPref);
 
 //        logoView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -86,6 +90,41 @@ public class ActivityMain extends ActivityHideSystemUI {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("ActivityMain",
+                "onStart(): Started activity");
         GUITools.hideUI(ActivityMain.this);
+
+        // Update activity based on changes to settings
+        View imageView = findViewById(R.id.background_image);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String backgroundPref = sharedPref.getString(ActivitySettings.KEY_WALLPAPER, "");
+        setBackgroundFromPref(imageView, backgroundPref);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("ActivityMain",
+                "onResume(): Resumed activity");
+    }
+
+    public static void setBackgroundFromPref(View view, String key) {
+        Log.d("ActivityMain",
+                "setBackgroundFromPref(): Background Pref = " + key);
+
+        if (key == null || key.length() == 0) {
+            Log.e("ActivityMain", "onCreate(): Missing background preference. Setting to default");
+            view.setBackgroundResource(R.drawable.wood_light_light);
+        } else if (key.equals("wood_grain_1")) {
+            view.setBackgroundResource(R.drawable.wood_light_light);
+        } else if (key.equals("wood_grain_2")) {
+            view.setBackgroundResource(R.drawable.wood_light);
+        } else if (key.equals("wood_grain_3")) {
+            view.setBackgroundResource(R.drawable.wood_dark);
+        } else {
+            Log.e("ActivityMain", "onCreate(): Unknown background preference. Setting to default");
+            view.setBackgroundResource(R.drawable.wood_light_light);
+        }
+    }
+
 }

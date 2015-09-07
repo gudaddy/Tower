@@ -2,11 +2,13 @@ package com.baxterpad.towerrules;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -75,6 +77,11 @@ public class ActivityGame extends ActivityHideSystemUI {
         //final View restartButtonView = findViewById(R.id.reset_button_view);
         restartButton = (Button) findViewById(R.id.restart_button);
         rulesTextView = findViewById(R.id.text_switcher_view);
+
+        // Update background image from preferences
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String backgroundPref = sharedPref.getString(ActivitySettings.KEY_WALLPAPER, "");
+        ActivityMain.setBackgroundFromPref(rulesTextView, backgroundPref);
 
         textSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
         textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {

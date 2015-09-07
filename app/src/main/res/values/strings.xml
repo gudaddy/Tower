@@ -2,11 +2,11 @@
 <resources>
 
     <string name="app_name">Tower Rules</string>
-    <string name="app_version">v0.1</string>
-    <string name="company_name">Bmore Innovation LLC</string>
+    <string name="app_version">v0.1.0</string>
+    <string name="company_name">Bmore Innovation</string>
 
-    <string name="gameover_button_text">Hold to end game</string>
-    <string name="replay_button_text">Play again</string>
+    <string name="gameover_button_text">Hold to End Game</string>
+    <string name="replay_button_text">Hold to Play Again</string>
     <string name="submit_button_text">Submit</string>
     <string name="cancel_button_text">Cancel</string>
 

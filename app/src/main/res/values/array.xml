@@ -11,11 +11,15 @@
 
 
     <string-array name="backgrounds">
-        <item name="wood_grain">Wood Grain</item>
+        <item name="wood_grain_1">Wood Grain 1</item>
+        <item name="wood_grain_2">Wood Grain 2</item>
+        <item name="wood_grain_2">Wood Grain 3</item>
     </string-array>
 
     <string-array name="background_values">
-        <item name="wood_grain">wood_grain</item>
+        <item name="wood_grain_1">wood_grain_1</item>
+        <item name="wood_grain_2">wood_grain_2</item>
+        <item name="wood_grain_2">wood_grain_3</item>
     </string-array>
 
 </resources>
