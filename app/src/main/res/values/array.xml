@@ -3,10 +3,12 @@
 
     <string-array name="rule_set">
         <item name="standard">Drinking Rules (NSFW)</item>
+        <item name="developer">Development (Remove prior to release)</item>
     </string-array>
 
     <string-array name="rule_set_values">
         <item name="standard">standard</item>
+        <item name="developer">developer</item>
     </string-array>
 
 
