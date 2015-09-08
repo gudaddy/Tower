@@ -235,6 +235,8 @@ public class ActivityGame extends ActivityHideSystemUI {
             Rules.initializeRules();
         } else if (key.equals("standard")) {
             Rules.initializeRules();
+        } else if (key.equals("family")) {
+            Rules.initializeKidsRules();
         } else if (key.equals("developer")) {
             Rules.initializeDevRules();
         } else {

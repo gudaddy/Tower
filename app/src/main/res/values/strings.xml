@@ -21,7 +21,7 @@
     <string name="first_block">Pull a block...\nTap for next rule</string>
     <string name="game_over">Game Over!\nScore: %1$d</string>
 
-    <string name="edit_rules">Edit Rules</string>
+    <string name="edit_rules">Edit Rules (under construction)</string>
 
     <string name="about_us_title">About Us</string>
     <string name="about_us_description_1">We wanted to add a twist to a classic game. Hope you enjoy :)</string>

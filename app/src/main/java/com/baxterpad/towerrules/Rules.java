@@ -43,7 +43,7 @@ public class Rules {
     }
 
     public static String[] setDefaultRules() {
-        rules = new String[54];
+        rules = new String[55];
         rules[0] = "Drink one for every letter in your last name.";
         rules[1] = "Pick someone to take a shot.";
         rules[2] = "Social drink!";
@@ -95,9 +95,69 @@ public class Rules {
         rules[48] = "You must sing whenever you talk for the rest game.";
         rules[49] = "Give 1. That player may give you 1 back. You may then give them 2; they may give 2 back. Continue until one of you opts not to give drinks.";
         rules[50] = "You must have drink in your other hand whenever you pull a block.";
-        rules[51] = "Anyone who picks up their cell phone must drink 1 for the remainder of the game.";
+        rules[51] = "For the remainder of the game, anyone who picks up their cell phone must drink 1.";
         rules[52] = "Do your best impression of someone at the table.";
         rules[53] = "You must talk like a robot for the rest of the game.";
+        rules[54] = "Everyone must now refer to you as \"O Captain, My Captain.\"";
+        return rules;
+    }
+
+    public static String[] setKidsRules() {
+        rules = new String[45];
+        rules[0] = "Say the alphabet backwards.";
+        rules[1] = "Play I Spy.";
+        rules[2] = "Tell everyone something they don't know about you.";
+        rules[3] = "Sing Twinkle Twinkle Little Star with your tongue out.";
+        rules[4] = "Tell the person to your left something you like about them.";
+        rules[5] = "Tell the person to your right what your first impression of them was.";
+        rules[6] = "Take a camera phone photo of the game and everyone playing right now.";
+        rules[7] = "Wear your shirt backwards for the rest of the game.";
+        rules[8] = "Play a quick round of Truth or Dare - everyone gets a turn.";
+        rules[9] = "Random scavenger hunt! Everyone has to find: a bobby pin, a piece of paper, something with the letter \"M\" on it.";
+        rules[10] = "During this round, everyone must pull out the blocks with their non-dominant hand.";
+        rules[11] = "Do your best impression of someone playing this game.";
+        rules[12] = "Go again.";
+        rules[13] = "You must refer to yourself in third person for the rest of the game.";
+        rules[14] = "Perform I'm A Little Teapot";
+        rules[15] = "Play thumb war with the person to your left.";
+        rules[16] = "Random Duck Duck Goose!";
+        rules[17] = "You must actively disagree with the person to your right.";
+        rules[18] = "Vogue! Strike a pose!";
+        rules[19] = "Say \"I love you\" in three different languages.";
+        rules[20] = "Give the tower a name, and only talk to it for the rest of the game.";
+        rules[21] = "Make the first animal sound that comes to your head.";
+        rules[22] = "For the rest of the game, you must overly motivate everyone as they pull out their pieces.";
+        rules[23] = "Do your best ballet move.";
+        rules[24] = "Do your best beat box for 10 seconds.";
+        rules[25] = "Call your mom and tell her that you love her...Right now!";
+        rules[26] = "Play two truths and a lie.";
+        rules[27] = "Interpret the artistic meaning behind the outfit worn by the person to your right.";
+        rules[28] = "Do 20 jumping jacks.";
+        rules[29] = "Do 10 push ups.";
+        rules[30] = "Skip your next turn.";
+        rules[31] = "You must talk like a robot for the rest of the game.";
+        rules[32] = "You can not speak for the rest of the game.";
+        rules[33] = "Any time you sing the Jeopardy theme song, the person taking their turn must complete their turn before you finish the song.";
+        rules[34] = "You must talk into a pretend microphone for the rest of the game.";
+        rules[35] = "You must sing whenever you talk for the rest game.";
+        rules[36] = "Everyone must remove the first piece they touch.";
+        rules[37] = "You must keep physical contact with the person to your right for the remainder of the game.";
+        rules[38] = "Everyone must now refer to you as \"O Captain, My Captain.\"";
+        rules[39] = "Make a rule.";
+        rules[40] = "Name your favorite movie.";
+        rules[41] = "Name your favorite food.";
+        rules[42] = "Name 7 items off of the McDonald's Dollar Menu.";
+        rules[43] = "Tell a story of a trip you took recently.";
+        rules[44] = "Tell a story of how you got a scar on your body.";
+//        rules[45] = "";
+//        rules[46] = "";
+//        rules[47] = "";
+//        rules[48] = "";
+//        rules[49] = "";
+//        rules[50] = "";
+//        rules[51] = "";
+//        rules[52] = "";
+//        rules[53] = "";
         return rules;
     }
 
@@ -140,7 +200,7 @@ public class Rules {
 
     public static void initializeKidsRules() {
         Log.d("TowerRules_Rules", "initializeKidsRules(): Initializing rules to kids rules list");
-        rules = setDefaultRules();
+        rules = setKidsRules();
         rulesHistory = new LinkedList<String>();
     }
 
